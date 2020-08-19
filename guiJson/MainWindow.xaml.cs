@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using System.Windows.Input;
+using Forms=System.Windows.Forms;
 
 namespace guiJson
 {
@@ -17,7 +18,7 @@ namespace guiJson
     public partial class MainWindow : Window
     {
         public static List<jsonModel> listOfJsonModel = new List<jsonModel>();
-        public static List<TextBox> ListOfTextBoxAdd=new List<TextBox>();
+        public static List<TextBox> ListOfTextBoxAdd = new List<TextBox>();
         public bool editMode = false;
         public string hashCodeOfEditObject = "";
         public MainWindow()
@@ -25,13 +26,13 @@ namespace guiJson
             InitializeComponent();
             initGui();
         }
-      
-     /// <summary>
-     /// inital the text to specific string 
-     /// </summary>
-     /// <param name="ListOfTextBox"></param>
-     /// <param name="initText"></param>
-        private void clearAllTextBoxText(List<TextBox> ListOfTextBox,string initText)
+
+        /// <summary>
+        /// inital the text to specific string 
+        /// </summary>
+        /// <param name="ListOfTextBox"></param>
+        /// <param name="initText"></param>
+        private void clearAllTextBoxText(List<TextBox> ListOfTextBox, string initText)
         {
             foreach (var item in ListOfTextBox)
             {
@@ -81,12 +82,12 @@ namespace guiJson
             addObjectCanvas.Visibility = Visibility.Visible;
 
         }
-       /// <summary>
-       /// parse the select type from string 
-       /// </summary>
-       /// <param name="type"></param>
-       /// <param name="value"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// parse the select type from string 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private dynamic parseSelect(Type type, string value)
         {
 
@@ -167,8 +168,11 @@ namespace guiJson
             allObjectCanvas.Children.Clear();
             allObjectCanvas.Children.Add(GUIController.createMainObject(this));
         }
-
-      
+        /// <summary>
+        /// enter to specific object 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void enterObjectCanvas(object sender, MouseButtonEventArgs e)
         {
             Canvas c = (Canvas)sender;
@@ -197,7 +201,16 @@ namespace guiJson
         private void exportJson_Click(object sender, MouseButtonEventArgs e)
         {
             var json = serializeJson(listOfJsonModel);
-            MessageBox.Show(json);
+            SaveFileDialog save = new SaveFileDialog();
+            save.FileName = "Data Json.json";
+            save.Filter = "Json File | *.json";
+            if (save.ShowDialog() == true)
+            {
+                StreamWriter writer = new StreamWriter(save.OpenFile());
+                    writer.WriteLine(json);
+                writer.Dispose();
+                writer.Close();
+            }
         }
         /// <summary>
         /// serialize list of json model to json string
@@ -208,27 +221,32 @@ namespace guiJson
         {
             return new JavaScriptSerializer().Serialize(listOfJsonModelToSerialize);
         }
+        /// <summary>
+        /// import json and convert to jsonModel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void importJson_Click(object sender, MouseButtonEventArgs e)
         {
-            string fileLoc = "";
+            string json = "";
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             openFileDialog.Filter = "json files (*.json)|*.json";
             if (openFileDialog.ShowDialog() == true)
             {
-                fileLoc = File.ReadAllText(openFileDialog.FileName);
-                string message = "do you want to add that to current list? cutaion: override will overide all your progress! ";
-                string caption = "Error Detected in Input";
+                json = File.ReadAllText(openFileDialog.FileName);
+                string message = "do you want to add that to current list? caution: override will delete all your progress! ";
+                string caption = "Warning: override the current progress ";
 
-                System.Windows.Forms.MessageBoxButtons buttons = System.Windows.Forms.MessageBoxButtons.YesNo;
-                System.Windows.Forms.DialogResult result;
+                Forms.MessageBoxButtons buttons = Forms.MessageBoxButtons.YesNo;
+                Forms.DialogResult result;
 
                 // Displays the MessageBox.
-                result = System.Windows.Forms.MessageBox.Show(message, caption, buttons);
-                if (result == System.Windows.Forms.DialogResult.Yes)
-                    listOfJsonModel.AddRange(deserializeJson(fileLoc));
+                result = Forms.MessageBox.Show(message, caption, buttons,Forms.MessageBoxIcon.Warning);
+                if (result == Forms.DialogResult.Yes)
+                    listOfJsonModel.AddRange(deserializeJson(json));
                 else
-                    listOfJsonModel = deserializeJson(fileLoc);
+                    listOfJsonModel = deserializeJson(json);
 
             }
             refreshObject();
@@ -290,7 +308,7 @@ namespace guiJson
         /// <param name="e"></param>
         private void openAddObjectMenu_Click(object sender, MouseButtonEventArgs e)
         {
-            clearAllTextBoxText(ListOfTextBoxAdd,"");
+            clearAllTextBoxText(ListOfTextBoxAdd, "");
             exitEditMode();
             showAddCanvas();
         }
