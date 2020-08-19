@@ -35,7 +35,13 @@ namespace guiJson
             myScrollViewer.Content = myStackPanel;
             return myScrollViewer;
         }
-        public static Canvas createAddObject(Type temp ,ref List<TextBox> ListOfTextBoxAdd)
+        /// <summary>
+        /// create add menu
+        /// </summary>
+        /// <param name="temp"></param>
+        /// <param name="ListOfTextBoxAdd"></param>
+        /// <returns></returns>
+        public static Canvas createAddMenu(Type temp ,ref List<TextBox> ListOfTextBoxAdd)
         {
             Canvas canvas = new Canvas();
             int x = 0;
@@ -60,6 +66,11 @@ namespace guiJson
           return canvas;
         }
         
+        /// <summary>
+        /// create the main objects of the jsons 
+        /// </summary>
+        /// <param name="mainWindow"></param>
+        /// <returns></returns>
         public static Canvas createMainObject(MainWindow mainWindow)
         {
             Canvas canvas = new Canvas();
@@ -89,7 +100,11 @@ namespace guiJson
         }
         
       
-
+        /// <summary>
+        /// create the fields ins strings to any objects
+        /// </summary>
+        /// <param name="temp"></param>
+        /// <returns></returns>
         public static Canvas createListOfFieldsForObject(object temp)
         {
             Canvas canvas = new Canvas();

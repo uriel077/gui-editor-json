@@ -16,82 +16,77 @@ namespace guiJson
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static List<jsonModel> listOfJsonModel;
-        public static List<TextBox> ListOfTextBoxAdd;
+        public static List<jsonModel> listOfJsonModel = new List<jsonModel>();
+        public static List<TextBox> ListOfTextBoxAdd=new List<TextBox>();
         public bool editMode = false;
         public string hashCodeOfEditObject = "";
         public MainWindow()
         {
-            initVaribles();
             InitializeComponent();
             initGui();
         }
-        private void initVaribles()
-        {
-            listOfJsonModel = new List<jsonModel>();
-            ListOfTextBoxAdd = new List<TextBox>();
-        }
       
-        private void clearAllTextBoxText(List<TextBox> ListOfTextBox)
+     /// <summary>
+     /// inital the text to specific string 
+     /// </summary>
+     /// <param name="ListOfTextBox"></param>
+     /// <param name="initText"></param>
+        private void clearAllTextBoxText(List<TextBox> ListOfTextBox,string initText)
         {
             foreach (var item in ListOfTextBox)
             {
-                item.Text = "";
+                item.Text = initText;
             }
         }
+        /// <summary>
+        /// init the gui
+        /// </summary>
         private void initGui()
         {
             showMainCanvas();
             refreshObject();
-            textBoxAddCanvas.Children.Add(GUIController.createAddObject(typeof(jsonModel), ref ListOfTextBoxAdd));
+            textBoxAddCanvas.Children.Add(GUIController.createAddMenu(typeof(jsonModel), ref ListOfTextBoxAdd));
         }
+        /// <summary>
+        /// show main canvas
+        /// </summary>
         private void showMainCanvas()
         {
             addObjectCanvas.Visibility = Visibility.Hidden;
             allObjectCanvas.Visibility = Visibility.Visible;
             exitEditMode();
         }
+        /// <summary>
+        /// exit edit mode
+        /// </summary>
         private void exitEditMode()
         {
             editMode = false;
             hashCodeOfEditObject = "";
         }
+        /// <summary>
+        /// enter to edit mode
+        /// </summary>
+        /// <param name="editHashObject"></param>
         private void enterEditMode(string editHashObject)
         {
             editMode = true;
             hashCodeOfEditObject = editHashObject;
         }
+        /// <summary>
+        /// show add canvas 
+        /// </summary>
         private void showAddCanvas()
         {
             addObjectCanvas.Visibility = Visibility.Visible;
 
         }
-       /* private void extractson_Click(object sender, RoutedEventArgs e)
-        {
-            var json = new JavaScriptSerializer().Serialize(listOfJsonModel);
-            MessageBox.Show(json);
-        }*/
-
-      /*  private void saveObject_Click(object sender, RoutedEventArgs e)
-        {
-            jsonModel jsonObjTemp;
-            if (editMode)
-
-                jsonObjTemp = listOfJsonModel.Find((j) => { return j.GetHashCode() == int.Parse(hashCodeOfEditObject); });
-            else
-                jsonObjTemp = new jsonModel();
-            foreach (var item in ListOfTextBoxAdd)
-            {
-                dynamic valueToAdd;
-                FieldInfo fieldInfo = jsonObjTemp.GetType().GetField(item.Tag + "");
-                valueToAdd = parseSelect(fieldInfo.FieldType, item.Text);
-                fieldInfo.SetValue(jsonObjTemp, valueToAdd);
-            }
-            if (!editMode)
-                listOfJsonModel.Add(jsonObjTemp);
-            refreshObject();
-            showMainCanvas();
-        }*/
+       /// <summary>
+       /// parse the select type from string 
+       /// </summary>
+       /// <param name="type"></param>
+       /// <param name="value"></param>
+       /// <returns></returns>
         private dynamic parseSelect(Type type, string value)
         {
 
@@ -164,40 +159,16 @@ namespace guiJson
             return null;
         }
 
+        /// <summary>
+        /// refresh main object gui 
+        /// </summary>
         public void refreshObject()
         {
             allObjectCanvas.Children.Clear();
             allObjectCanvas.Children.Add(GUIController.createMainObject(this));
-
         }
 
-      /*  private void importJson_Copy_Click(object sender, RoutedEventArgs e)
-        {
-            string fileLoc = "";
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            openFileDialog.Filter = "json files (*.json)|*.json";
-            if (openFileDialog.ShowDialog() == true)
-            {
-                fileLoc = File.ReadAllText(openFileDialog.FileName);
-                string message = "do you want to add that to current list? cutaion: override will overide all your progress! ";
-                string caption = "Error Detected in Input";
-
-                System.Windows.Forms.MessageBoxButtons buttons = System.Windows.Forms.MessageBoxButtons.YesNo;
-                System.Windows.Forms.DialogResult result;
-
-                // Displays the MessageBox.
-                result = System.Windows.Forms.MessageBox.Show(message, caption, buttons);
-                if (result == System.Windows.Forms.DialogResult.Yes)
-                    listOfJsonModel.AddRange(new JavaScriptSerializer().Deserialize<List<jsonModel>>(fileLoc));
-                else
-                    listOfJsonModel = new JavaScriptSerializer().Deserialize<List<jsonModel>>(fileLoc);
-
-            }
-            refreshObject();
-        }*/
-
-       
+      
         public void enterObjectCanvas(object sender, MouseButtonEventArgs e)
         {
             Canvas c = (Canvas)sender;
@@ -206,21 +177,37 @@ namespace guiJson
             putInformationToEditScreen(jsonModelChoosen);
             showAddCanvas();
         }
-
+        /// <summary>
+        /// put object fields into text box for edit mode   
+        /// </summary>
+        /// <param name="jsonModel"> </param>
         private void putInformationToEditScreen(object jsonModel)
         {
-            foreach (var item in jsonModel.GetType().GetFields())
+            FieldInfo[] objectFields = jsonModel.GetType().GetFields();
+            foreach (var item in objectFields)
             {
                 ListOfTextBoxAdd.Find((t) => { return t.Tag + "" == item.Name; }).Text = item.GetValue(jsonModel) + "";
             }
         }
-
-        private void extractson_Click(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// export the objects to json
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void exportJson_Click(object sender, MouseButtonEventArgs e)
         {
-            var json = new JavaScriptSerializer().Serialize(listOfJsonModel);
+            var json = serializeJson(listOfJsonModel);
             MessageBox.Show(json);
         }
-
+        /// <summary>
+        /// serialize list of json model to json string
+        /// </summary>
+        /// <param name="listOfJsonModelToSerialize">the list you want to serialize</param>
+        /// <returns>the list in json string</returns>
+        private string serializeJson(List<jsonModel> listOfJsonModelToSerialize)
+        {
+            return new JavaScriptSerializer().Serialize(listOfJsonModelToSerialize);
+        }
         private void importJson_Click(object sender, MouseButtonEventArgs e)
         {
             string fileLoc = "";
@@ -239,19 +226,41 @@ namespace guiJson
                 // Displays the MessageBox.
                 result = System.Windows.Forms.MessageBox.Show(message, caption, buttons);
                 if (result == System.Windows.Forms.DialogResult.Yes)
-                    listOfJsonModel.AddRange(new JavaScriptSerializer().Deserialize<List<jsonModel>>(fileLoc));
+                    listOfJsonModel.AddRange(deserializeJson(fileLoc));
                 else
-                    listOfJsonModel = new JavaScriptSerializer().Deserialize<List<jsonModel>>(fileLoc);
+                    listOfJsonModel = deserializeJson(fileLoc);
 
             }
             refreshObject();
         }
-
+        /// <summary>
+        /// desrialize Json to list of json model
+        /// </summary>
+        /// <param name="jsonString"></param>
+        /// <returns></returns>
+        private List<jsonModel> deserializeJson(string jsonString)
+        {
+            return new JavaScriptSerializer().Deserialize<List<jsonModel>>(jsonString);
+        }
+        /// <summary>
+        /// save button click
+        /// save new object or update exits object
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveObject_Click(object sender, MouseButtonEventArgs e)
         {
+            saveObject();
+            refreshObject();
+            showMainCanvas();
+        }
+        /// <summary>
+        /// save a object to list 
+        /// </summary>
+        private void saveObject()
+        {
             jsonModel jsonObjTemp;
-            if (editMode)
-
+            if (editMode)//if we edit exits object
                 jsonObjTemp = listOfJsonModel.Find((j) => { return j.GetHashCode() == int.Parse(hashCodeOfEditObject); });
             else
                 jsonObjTemp = new jsonModel();
@@ -264,18 +273,24 @@ namespace guiJson
             }
             if (!editMode)
                 listOfJsonModel.Add(jsonObjTemp);
-            refreshObject();
-            showMainCanvas();
         }
-
-        private void exitAddObject_Click(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// exit the menu add object
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void exitAddObjectMenu_Click(object sender, MouseButtonEventArgs e)
         {
             showMainCanvas();
         }
-
-        private void addObject_Click(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// open the object menu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void openAddObjectMenu_Click(object sender, MouseButtonEventArgs e)
         {
-            clearAllTextBoxText(ListOfTextBoxAdd);
+            clearAllTextBoxText(ListOfTextBoxAdd,"");
             exitEditMode();
             showAddCanvas();
         }

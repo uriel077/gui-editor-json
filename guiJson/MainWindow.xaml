@@ -15,12 +15,12 @@
 		<Canvas Name="addObjectCanvas" Margin="183,124,195,10" Background="PaleVioletRed">
 			<Canvas Name="textBoxAddCanvas" Height="185" Canvas.Top="63" Width="398" Canvas.Left="10"/>
 			<Image x:Name="saveImageWithoutBg_png" Height="54"  Source="Resources/saveImageWithoutBg.png" Stretch="Fill" Canvas.Left="175" Canvas.Bottom="5" Width="78" Canvas.Top="253" MouseDown="saveObject_Click"/>
-			<Image x:Name="exitImageWithoutBg_png" Height="63" Canvas.Right="5" Source="Resources/exitImageWithoutBg.png" Stretch="Fill" Width="70" Canvas.Top="5" MouseDown="exitAddObject_Click"/>
+			<Image x:Name="exitImageWithoutBg_png" Height="63" Canvas.Right="5" Source="Resources/exitImageWithoutBg.png" Stretch="Fill" Width="70" Canvas.Top="5" MouseDown="exitAddObjectMenu_Click"/>
 
 		</Canvas>
 		<Canvas>
-			<Image x:Name="exportImageWithoutBg_png" Source="Resources/exportImageWithoutBg.png" Stretch="Fill" MouseDown="extractson_Click" Height="66" Canvas.Right="70" Canvas.Top="16" Width="62"/>
-			<Image x:Name="plusImageWithoutBg_png" Height="66" Canvas.Right="8" Source="Resources/plusImageWithoutBg.png" Stretch="Fill" Canvas.Top="87" Width="62" MouseDown="addObject_Click"/>
+			<Image x:Name="exportImageWithoutBg_png" Source="Resources/exportImageWithoutBg.png" Stretch="Fill" MouseDown="exportJson_Click" Height="66" Canvas.Right="70" Canvas.Top="16" Width="62"/>
+			<Image x:Name="plusImageWithoutBg_png" Height="66" Canvas.Right="8" Source="Resources/plusImageWithoutBg.png" Stretch="Fill" Canvas.Top="87" Width="62" MouseDown="openAddObjectMenu_Click"/>
 
 			<Image x:Name="importImageWIthoutBg_png" Source="Resources/importImageWIthoutBg.png" Stretch="Fill" RenderTransformOrigin="-0.437,1.341" MouseDown="importJson_Click" Height="66" Canvas.Right="5" Canvas.Top="16" Width="62"/>
 		</Canvas>
