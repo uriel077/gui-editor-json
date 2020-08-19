@@ -99,19 +99,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="exportImageWithoutBg.png" />
+    <Resource Include="Resources\exportImageWithoutBg.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="importImageWIthoutBg.png" />
+    <Resource Include="Resources\importImageWIthoutBg.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="saveImageWithoutBg.png" />
+    <Resource Include="Resources\saveImageWithoutBg.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="exitImageWithoutBg.png" />
+    <Resource Include="Resources\exitImageWithoutBg.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="plusImageWithoutBg.png" />
+    <Resource Include="Resources\plusImageWithoutBg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
