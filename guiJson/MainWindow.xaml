@@ -1,0 +1,28 @@
+﻿<Window x:Class="guiJson.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:guiJson"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Name="mWindow" WindowState="Maximized"  WindowStyle="None">
+	<Grid>
+		<TextBlock x:Name="label" TextAlignment="Center" Text="GUI Json" HorizontalAlignment="Left" VerticalAlignment="Top" Width="796" Height="97" FontSize="80" Margin="10,0,-10,0" />
+		
+		<Grid Name="allObjectCanvas" Margin="0,179,0,69.667">
+
+		</Grid>
+		<Canvas Name="addObjectCanvas" Margin="183,124,195,10" Background="PaleVioletRed">
+			<Canvas Name="textBoxAddCanvas" Height="185" Canvas.Top="63" Width="398" Canvas.Left="10"/>
+			<Image x:Name="saveImageWithoutBg_png" Height="54"  Source="saveImageWithoutBg.png" Stretch="Fill" Canvas.Left="175" Canvas.Bottom="5" Width="78" Canvas.Top="253" MouseDown="saveObject_Click"/>
+			<Image x:Name="exitImageWithoutBg_png" Height="63" Canvas.Right="5" Source="exitImageWithoutBg.png" Stretch="Fill" Width="70" Canvas.Top="5" MouseDown="exitAddObject_Click"/>
+
+		</Canvas>
+		<Canvas>
+			<Image x:Name="exportImageWithoutBg_png" Source="exportImageWithoutBg.png" Stretch="Fill" MouseDown="extractson_Click" Height="66" Canvas.Right="70" Canvas.Top="16" Width="62"/>
+			<Image x:Name="plusImageWithoutBg_png" Height="66" Canvas.Right="8" Source="plusImageWithoutBg.png" Stretch="Fill" Canvas.Top="87" Width="62" MouseDown="addObject_Click"/>
+
+			<Image x:Name="importImageWIthoutBg_png" Source="importImageWIthoutBg.png" Stretch="Fill" RenderTransformOrigin="-0.437,1.341" MouseDown="importJson_Click" Height="66" Canvas.Right="5" Canvas.Top="16" Width="62"/>
+		</Canvas>
+	</Grid>
+</Window>
